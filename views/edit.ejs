@@ -35,6 +35,7 @@
 			color: #ffffff;
 		}
 		</style>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 	</head>
 	<body>
 		<div class="login-form">
@@ -44,10 +45,30 @@
 				<p>First Name : <input type="text" name="firstname" placeholder="First Name" required value="<%= person.first_name %>"></p>
 				<p>Last Name &nbsp;: <input type="text" name="lastname" placeholder="Last Name" required value="<%= person.last_name %>"></p>
 				<p>Contact No : <input type="text" name="phone" placeholder="Phone No." required value="<%= person.phone %>"></p>
-				<p>Password &nbsp;&nbsp;: <input type="text" name="password" placeholder="Password" required value="<%= person.password %>"></p>
+				<p>Password &nbsp;&nbsp;: <input id="password" type="password" name="password" placeholder="Password" required value="<%= person.password %>"></p>
+				<p>Show Password <button id="eye" type="button" name="button" onclick="ShowPassword()"><i class="fas fa-eye" aria-hidden="true"></i></button>	</p>
 				<input type="submit">
 			</form>
 		</div>
 		<a href="/" style="margin:auto">Back to Home</a>
+		<script type="text/javascript">
+			function ShowPassword()
+			{
+				var PasswordBox = document.querySelector("#password");
+				console.log("Button clicked");
+				if(PasswordBox.type=="password")
+				{
+						PasswordBox.type="text";
+						document.querySelector(".fas").classList.remove("fa-eye");
+						document.querySelector(".fas").classList.add("fa-eye-slash");
+				}
+				else
+				{
+					PasswordBox.type="password";
+					document.querySelector(".fas").classList.remove("fa-eye-slash");
+					document.querySelector(".fas").classList.add("fa-eye");
+				}
+			}
+		</script>
 	</body>
 </html>

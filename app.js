@@ -160,24 +160,37 @@ app.get('/myorders', function(req, res) {
 			var order_ids=rows;
 			console.log("Order Ids are ",order_ids);
 			var alldetails=[];
-			async.forEach(rows, processEachTask, afterAllTasks);
-			function processEachTask(row, callback) {
-				db.all("select * from order_details inner join food on food.food_id=order_details.food_id where order_details.order_id=?",[row.order_id],function(err,itemdetails){
-					if(err){
-						console.log(err);
-					}
-					alldetails.push(itemdetails);
-					callback(err);
-	    	});
-	  	}
-			function afterAllTasks(err) {
+			function doA(order_id)
+			{
+				return new Promise(function(resolve, reject)
+				{
+					db.all("select * from order_details inner join food on food.food_id=order_details.food_id where order_details.order_id=?",[order_id],function(err,itemdetails)
+					{
+						if(err)
+						{
+							console.log(err);
+						} else {
+							resolve(itemdetails);
+						}
+		    	});
+				});
+			}
+			async function executeAsyncTask ()
+			{
+				for(var index=0;index<order_ids.length;index++)
+				{
+					var temp = await doA(order_ids[index].order_id);
+					alldetails.push(temp);
+				}
+				console.log("order_ids is ",order_ids);
+				console.log("all_details is ",alldetails);
 				res.render('myorders',{order_ids:order_ids, alldetails:alldetails});
-		  }
+			}
+			executeAsyncTask();
 	  });
   } else {
     res.redirect("/login");
   }
-
 });
 
 app.post('/auth', function(request, response) {
