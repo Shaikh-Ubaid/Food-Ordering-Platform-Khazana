@@ -266,6 +266,6 @@ app.post('/edit', function(request, response) {
 	response.redirect("/login");
 });
 
-app.listen(8080, function(){
+app.listen((process.env.PORT || 8080), function(){
   console.log("Listening to port 8080");
 });
